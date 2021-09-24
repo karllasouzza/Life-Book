@@ -1,15 +1,15 @@
 <template>
   <section>
-    <Logo />
-    <main>
+    <Logo :class="!chang ? 'logo_account' : ''"  />
+    <main :class="!chang ? 'form_account' : ''">
       <header>
-        <Labels :text="login" />
-        <Labels :text="account" />
+        <Labels :text="login" :style="{color: chang ? '#fff' : 'rgba(255, 255, 255, 0.25)'}" @click.native="chang = true" />
+        <Labels :text="account" :style="{color: !chang ? '#fff' : 'rgba(255, 255, 255, 0.25)'}" @click.native="chang = false" />
       </header>
-      <form>
+      <!-- Login -->
+      <form v-if="chang === true" >
         <div>
           <h1>{{ msg }}</h1>
-          <LabelsInfo target="" :text="info" />
         </div>
         <div>
           <LabelsInfo target="name" :text="info_name" />
@@ -22,7 +22,7 @@
             ref="ref_passWord"
             v-model="password"
             hiden="true"
-            :type="type_password"
+            type="password"
           />
         </div>
         <ButtonPrimary :text="text_button" />
@@ -30,6 +30,45 @@
           <span>{{ reset_password }}</span
           ><labels :text="reset_password_target" />
         </p>
+      </form>
+      <!-- Create account -->
+      <form v-else>
+        <div>
+          <h1>{{ msg_account }}</h1>
+        </div>
+        <!-- Email  -->
+        <div>
+          <LabelsInfo target="email" :text="info_email" />
+          <Inputs id="email" ref="ref_email" v-model="email" type="email" />
+        </div>
+        <!-- Name  -->
+        <div> 
+          <LabelsInfo target="name" :text="info_name" />
+          <Inputs id="name" ref="ref_name" v-model="name" type="text" />
+        </div>
+        <!-- PassWord  -->
+        <div>
+          <LabelsInfo target="password" :text="info_passWord" />
+          <Inputs
+            id="password"
+            ref="ref_passWord"
+            v-model="password"
+            hiden="true"
+            type="password"
+          />
+        </div>
+        <!-- Confirm to PassWord  -->
+        <div>
+          <LabelsInfo target="password_confirm" :text="info_passWord_confirm" />
+          <Inputs
+            id="password_confirm"
+            ref="ref_passWord_confirm"
+            v-model="password_confirm"
+            hiden="true"
+            type="password"
+          />
+        </div>
+        <ButtonPrimary :text="text_button" />
       </form>
     </main>
   </section>
@@ -40,30 +79,35 @@ import Logo from '~/components/Icons/Logo.vue'
 import Inputs from '~/components/Inputs.vue'
 
 export default {
+  components: {
+    Logo,
+    Inputs,
+  },
   data() {
     return {
       // Header
       login: 'Entrar',
       account: 'Criar Conta',
+      chang: true,
 
       // Form
       msg: 'Bem vindo de volta',
-      info: 'Entre com sua conta',
+      msg_account: 'Seja Bem Vindo',
+      info_email: 'Email',
       info_name: 'Nome de usuário',
       info_passWord: 'Senha',
-      type_password: 'password',
+      info_passWord_confirm: 'Confirmar Senha',
+
       text_button: 'Entrar',
       reset_password: 'Esqueceu a senha?',
       reset_password_target: 'Resete aqui',
 
       // V-modal
-      password: '',
+      email: '',
       name: '',
+      password: '',
+      password_confirm: ''
     }
-  },
-  components: {
-    Logo,
-    Inputs,
   },
 }
 </script>
@@ -85,6 +129,11 @@ section {
 
 section > svg {
   height: 70px;
+  margin: auto 0;
+}
+
+.logo_account{
+  height: 65px;
   margin: auto 0;
 }
 
@@ -125,6 +174,10 @@ section > main > form {
   background: var(--primary);
 
   border-radius: 25px 25px 0 0;
+}
+
+.form_account{
+  height: 84%;  
 }
 
 main > form > div {

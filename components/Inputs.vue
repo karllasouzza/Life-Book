@@ -1,7 +1,7 @@
 <template>
   <div>
     <input :type="type" />
-    <span v-if="hiden">{{ text }}</span>
+    <span v-if="hiden == 'true'">{{ text }}</span>
   </div>
 </template>
 
@@ -15,8 +15,8 @@ export default {
     },
     hiden: {
       required: false,
-      type: Boolean,
-      default: false,
+      type: String,
+      default: 'false',
     },
   },
   data() {
